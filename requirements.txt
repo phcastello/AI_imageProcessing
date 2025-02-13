@@ -1,0 +1,5 @@
+matplotlib==3.10.0
+numpy==2.2.3
+opencv_python==4.11.0.86
+pandas==2.2.3
+Pillow==11.1.0
