@@ -23,7 +23,9 @@ def saveImages(images, saveDirectory):
     - images (type=dict): Dictionary where keys are the names of the images and values are the image data.
     - saveDirectory (type=str): path that the function will save the images. 
     '''
-    print("Saving the treated images in {}..." .format(saveDirectory))
+    print()
+    print("--------------------------- Saving Images -----------------------------")
+    print("Saving the treated images in /{}" .format(saveDirectory))
     os.makedirs(saveDirectory, exist_ok=True)
 
     errors = []
@@ -52,14 +54,14 @@ def saveImages(images, saveDirectory):
 
     if not errors:
         print(f"All images were saved successfully!")
+        print("You can find them in the /{} directory." .format(saveDirectory))
+        print("Thanks for using this script!")
     else:
         print("Some images could not be saved correctly:")
         for error in errors:
             print(f"    - {error}")
 
 if __name__ == "__main__":
-    print('Available styles in plt.style.use: ', plt.style.available)
-
     plt.style.use('ggplot')
 
     print('OpenCV version:', cv2.__version__)
@@ -166,9 +168,12 @@ if __name__ == "__main__":
     # Blurring an image
     kernel_blurry = np.ones((3,3), np.float32) / 9 # (dimensions, type_of_data) / 9
     imgCat_kernelBlurry = cv2.filter2D(imgCat_kernel, -1, kernel_blurry)
+    # Border detection
+    kernel_border = np.array([[-1, -1, -1],[-1, 8, -1],[-1, -1, -1]])
+    imgCat_kernelBorder = cv2.filter2D(imgCat_kernel, -1, kernel_border)
 
     # Showing plots
-    fig, ax = plt.subplots(1,3, figsize=(15,5))
+    fig, ax = plt.subplots(1,4, figsize=(20,5))
     ax[0].imshow(imgCat_kernel)
     ax[0].set_title('Original Image')
     ax[0].axis('off')
@@ -178,6 +183,9 @@ if __name__ == "__main__":
     ax[2].imshow(imgCat_kernelBlurry)
     ax[2].set_title('Blurry Image')
     ax[2].axis('off')
+    ax[3].imshow(imgCat_kernelBorder)
+    ax[3].set_title('Border Detection')
+    ax[3].axis('off')
     plt.show()
 
     # Printing the pixel values of the cat image in the console
@@ -206,6 +214,7 @@ if __name__ == "__main__":
         "imgCat_kernel": imgCat_kernel,
         "imgCat_kernelSharpened": imgCat_kernelSharpened,
         "imgCat_kernelBlurry": imgCat_kernelBlurry,
+        "imgCat_kernelBorder": imgCat_kernelBorder,
         "dogImg": dogImg_mpl,
         "dogImgGray": dogImgGray,
         "dogImg_resized2Small": dogImg_resized2Small,
